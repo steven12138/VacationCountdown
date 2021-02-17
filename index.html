@@ -3,13 +3,106 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>假期余额查询</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="./css/index.css">
 </head>
 
 <body>
-
+    <div id="app">
+        <el-container>
+            <el-header class="header-bar">
+                <div class="real-header-bar">
+                    <span id="title">假期余额查询</span>
+                    <div>
+                        <!-- <el-button type="success" id="adg" @click="add_god">添加神仙</el-button> -->
+                        <el-button type="success" id="adg" @click="change_UI">更改进度条样式</el-button>
+                    </div>
+                </div>
+            </el-header>
+            <el-main class="main-area">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span>假期已经过了</span>
+                        <el-button style="float: right; padding: 3px 0" type="text" @click="about">开发者信息</el-button>
+                    </div>
+                    <div class="card-body">
+                        <el-collapse-transition>
+                            <div v-show="isc==true">
+                                <!-- <el-image style="width: 410px; height: 200px;margin-bottom: 10px;" src="http://files.eduuu.com/img/2010/08/30/154138_4c7b60b2d5394.jpg" fit="cover">
+                                </el-image> -->
+                                <div class="couting">
+                                    <el-progress type="circle" :percentage="prs"></el-progress>
+                                </div>
+                            </div>
+                        </el-collapse-transition>
+                        <el-collapse-transition>
+                            <div v-show="isc!=true">
+                                <el-image style="width: 100%; height: 200px;margin-bottom: 10px;" src="http://files.eduuu.com/img/2010/08/30/154138_4c7b60b2d5394.jpg" fit="cover">
+                                </el-image>
+                                <div class="couting">
+                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="prs"></el-progress>
+                                </div>
+                            </div>
+                        </el-collapse-transition>
+                    </div>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
 </body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                uid: "",
+                visible: false,
+                show: true,
+                prs: 0,
+                isc: true,
+                timer: null,
+                starttime: "2021-1-29 00:00:00",
+                endtime: "2021-3-1 08:00:00"
+
+            }
+        },
+        methods: {
+            onload() {
+                let self = this
+                self.timer = setInterval(function() {
+                    console.log(self.endtime)
+                    let endtime_p = new Date(self.endtime).getTime();
+                    let now_p = new Date().getTime();
+                    let sttime_p = new Date(self.starttime).getTime();
+                    // console.log(sttime_p, now_p, endtime_p)
+                    self.prs = parseInt((now_p - sttime_p) / (endtime_p - sttime_p) * 1000000000) / 10000000;
+                }, 100)
+            },
+            change_UI() {
+                this.isc = !this.isc
+            },
+            about() {
+                const h = this.$createElement;
+                this.$msgbox({
+                    title: '消息',
+                    message: h('div', null, [
+                        h('span', null, 'Powered By '),
+                        h('i', {
+                            style: 'color: teal',
+                        }, 'steven12138'),
+                    ]),
+                    confirmButtonText: '确定',
+                });
+            },
+        }
+    })
+    window.onload = vue.onload;
+</script>
 
 </html>
