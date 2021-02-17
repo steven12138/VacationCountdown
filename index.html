@@ -44,11 +44,6 @@
                                 <div class="couting">
                                     <el-progress :text-inside="true" :stroke-width="18" :percentage="prs"></el-progress>
                                 </div>
-                                <div>
-                                    {{(now_p - sttime_p) }}
-                                    <br /> {{(endtime_p - sttime_p)}}
-                                    <br /> {{parseInt((now_p - sttime_p) / (endtime_p - sttime_p)*10000000)}}
-                                </div>
                             </div>
                         </el-collapse-transition>
                     </div>
@@ -72,29 +67,27 @@
                 prs: 0,
                 isc: true,
                 timer: null,
-                starttime: "2021-1-29 00:00:00",
-                endtime: "2021-3-1 08:00:00",
-                endtime_p: 0,
-                now_p: 0,
-                sttime_p: 0
+                starttime: "2021/1/29 00:00:00",
+                endtime: "2021/3/1 08:00:00"
+
             }
         },
         methods: {
             onload() {
                 let self = this
-                setInterval(function() {
-                    self.endtime_p = new Date("2021-3-1 08:00:00").getTime();
-                    self.now_p = new Date().getTime();
-                    self.sttime_p = new Date("2021-1-29 00:00:00").getTime();
+                self.timer = setInterval(function() {
+                    console.log(self.endtime)
+                    let endtime_p = new Date(self.endtime).getTime();
+                    let now_p = new Date().getTime();
+                    let sttime_p = new Date(self.starttime).getTime();
                     // console.log(sttime_p, now_p, endtime_p)
-                    self.prs = parseInt(((self.now_p - self.sttime_p) / (self.endtime_p - self.sttime_p) * 100000000), 10) / 1000000;
+                    self.prs = parseInt((now_p - sttime_p) / (endtime_p - sttime_p) * 1000000000) / 10000000;
                 }, 100)
             },
             change_UI() {
                 this.isc = !this.isc
             },
             about() {
-                let self = this
                 const h = this.$createElement;
                 this.$msgbox({
                     title: '关于',
@@ -104,10 +97,7 @@
                             style: 'color: teal',
                         }, 'steven12138'),
                         h('br'),
-                        h('span', null, "本倒计时截至至2021年3月1日08:00:00"),
-                        h('br'),
-                        h('br'),
-                        h('span', null, "v 0.0.2"),
+                        h('span', null, "本倒计时截至至2021年3月1日08:00:00")
                     ]),
                     confirmButtonText: '确定',
                 });
