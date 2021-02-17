@@ -75,13 +75,12 @@
         methods: {
             onload() {
                 let self = this
-                self.timer = setInterval(function() {
-                    console.log(self.endtime)
-                    let endtime_p = new Date(self.endtime).getTime();
+                setInterval(function() {
+                    let endtime_p = new Date("2021-3-1 08:00:00").getTime();
                     let now_p = new Date().getTime();
-                    let sttime_p = new Date(self.starttime).getTime();
+                    let sttime_p = new Date("2021-1-29 00:00:00").getTime();
                     // console.log(sttime_p, now_p, endtime_p)
-                    self.prs = parseInt((now_p - sttime_p) / (endtime_p - sttime_p) * 1000000000) / 10000000;
+                    self.prs = parseInt((now_p - sttime_p) / (endtime_p - sttime_p) * 100000000) / 1000000;
                 }, 100)
             },
             change_UI() {
@@ -97,7 +96,10 @@
                             style: 'color: teal',
                         }, 'steven12138'),
                         h('br'),
-                        h('span', null, "本倒计时截至至2021年3月1日08:00:00")
+                        h('span', null, "本倒计时截至至2021年3月1日08:00:00"),
+                        h('br'),
+                        h('br'),
+                        h('span', null, "v 0.0.1")
                     ]),
                     confirmButtonText: '确定',
                 });
